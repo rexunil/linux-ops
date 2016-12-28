@@ -6,6 +6,15 @@ touch /data/mongodb/conf/mongodb.conf        #创建配置文件
 ./mongod -f /data/mongodb/conf/mongodb.conf
 src/redis-server redis.conf &                #带配置文件启动
 
+=========/data/mongodb/conf/mongodb.conf ==========
+dbpath=/data/mongodb/db 
+logpath=/data/mongodb/logs/mongodb.log 
+bind_ip=127.0.0.1
+port=27017 
+fork=true 
+nohttpinterface=true
+======================END===========================
+
 一、启动{
 
     # 不启动认证

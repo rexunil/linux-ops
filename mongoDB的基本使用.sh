@@ -1,5 +1,11 @@
 mongoDB的基本使用
 
+wget https://fastdl.mongodb.org/linux/mongodb-linux-x86_64-rhel70-3.4.0.tgz
+mkdir -p /data/mongodb{bin,logs,db}          #创建目录
+touch /data/mongodb/conf/mongodb.conf        #创建配置文件
+./mongod -f /data/mongodb/conf/mongodb.conf
+src/redis-server redis.conf &                #带配置文件启动
+
 一、启动{
 
     # 不启动认证
@@ -20,7 +26,7 @@ mongoDB的基本使用
     ./mongod -f /opt/mongodb/mongodb.conf
 
     # 其他参数
-    bind_ip         # 绑定IP  使用mongo登录需要指定对应IP
+    bind_ip         # 绑定IP  使用mongo登录需要指定对应IP,默认
     journal         # 开启日志功能,降低单机故障的恢复时间,取代dur参数
     syncdelay       # 系统同步刷新磁盘的时间,默认60秒
     directoryperdb  # 每个db单独存放目录,建议设置.与mysql独立表空间类似

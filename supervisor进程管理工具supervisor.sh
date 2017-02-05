@@ -144,3 +144,73 @@ supervisorctl update
 除了单个进程的控制，还可以配置 group，进行分组管理。
 经常查看日志文件，包括 supervisord 的日志和各个 pragram 的日志文件，
 程序 crash 或抛出异常的信息一半会输出到 stderr，可以查看相应的日志文件来查找问题。
+
+
+9.supervisor好处
+简单
+以前管理linux进程的时候，需要自己编写一个能够实现进程start/stop/restart/reload功能的脚本，
+然后丢到/etc/init.d/下面。这样做的问题是，编写脚本费事，而且进程挂了不会自动重启。这样需要自己再写一个监控重启脚本。
+supervisor则可以完美的解决这些问题。通过supervisor管理进程，
+就是通过fork/exec的方式把这些被管理的进程，当作supervisor的子进程来启动。
+我们只需要在supervisor的配置文件中，把要管理的进程的可执行文件的路径写进去就OK了。
+另外，被管理进程作为supervisor的子进程，当子进程挂掉的时候，
+父进程可以准确获取子进程挂掉的信息的，所以当然也就可以对挂掉的子进程进行自动重启了，
+当然重启还是不重启，也要看你的配置文件里面有木有设置autostart=true。
+
+精确
+linux对进程状态的反馈，有时候不太准确。为啥不准确? why? 
+官方文档是这么说的。系统不能时刻知晓某个进程的状态？ 
+而supervisor监控子进程，得到的子进程状态无疑是准确的。
+
+进程组
+supervisor可以对进程组统一管理，也就可以把需要管理的进程写到一个组里面，
+然后把这个组作为一个对象进行管理，如启动，停止，重启等等操作。
+而linux系统则是没有这种功能的，我们想要停止一个进程，只能一个一个的去停止，
+要么就自己写个脚本去批量停止。
+
+集中式管理
+supervisor管理的进程，进程组信息，全部都写在一个ini格式的文件里就OK了。
+而且，我们管理supervisor的时候的可以在本地进行管理，也可以远程管理，
+而且supervisor提供了一个web界面，我们可以在web界面上监控，管理进程。 
+当然了，本地，远程和web管理的时候，需要调用supervisor的xml_rpc接口。
+
+有效性
+当supervisor的子进程挂掉的时候，操作系统会直接给supervisor发信号。
+而其他的一些类似supervisor的工具，则是通过进程的pid文件，来发送信号的，
+然后定期轮询来重启失败的进程。显然supervisor更加高效。。。
+听说过god,director，但是没用过。有兴趣的可以玩玩
+
+可扩展性
+supervisor是个开源软件，可以直接去改软件。
+不过咱们大多数人还是老老实实研究supervisot提供的接口吧，
+supervisor主要提供了两个可扩展的功能。一个是event机制，这个就是楼主这两天干的活要用到的东西。
+再一个是xml_rpc,supervisor的web管理端和远程调用的时候，就要用到它了。
+
+权限
+大伙都知道linux的进程，特别是侦听在1024端口之下的进程，一般用户大多数情况下，
+是不能对其进行控制的。想要控制的话，必须要有root权限。而supervisor提供了一个功能，
+可以为supervisord或者每个子进程，设置一个非root的user，这个user就可以管理它对应的进程了。
+
+10.supervisor组件
+
+supervisord
+supervisord是supervisor的服务端程序。
+干的活：启动supervisor程序自身，启动supervisor管理的子进程，响应来自clients的请求，
+重启闪退或异常退出的子进程，把子进程的stderr或stdout记录到日志文件中，生成和处理Event
+
+supervisorctl
+这东西还是有点用的，如果说supervisord是supervisor的服务端程序，
+那么supervisorctl就是client端程序了。supervisorctl有一个类型shell的命令行界面，
+我们可以利用它来查看子进程状态，启动/停止/重启子进程，获取running子进程的列表等等。。。
+最牛逼的一点是，supervisorctl不仅可以连接到本机上的supervisord，
+还可以连接到远程的supervisord，当然在本机上面是通过UNIX socket连接的，
+远程是通过TCP socket连接的。supervisorctl和supervisord之间的通信，是通过xml_rpc完成的。    
+相应的配置在[supervisorctl]块里面
+
+Web Server
+Web Server主要可以在界面上管理进程，Web Server其实是通过XML_RPC来实现的，
+可以向supervisor请求数据，也可以控制supervisor及子进程。
+配置在[inet_http_server]块里面
+
+XML_RPC接口
+这个就是远程调用的，上面的supervisorctl和Web Server就是它弄的

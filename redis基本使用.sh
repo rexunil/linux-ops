@@ -1,6 +1,9 @@
 1.安装
 wget http://download.redis.io/releases/redis-3.2.6.tar.gz
 tar -zxf redis-3.2.6.tar.gz
+cd /data/redis
+make
+#make fatal error 则 make MALLOC=libc
 src/redis-server redis.conf &  #后台启动redis服务器,带配置文件redis.conf
 
 [ -f redis.conf ] && cat /dev/null > redis.conf || touch redis.conf

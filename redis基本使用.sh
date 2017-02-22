@@ -4,6 +4,14 @@ tar -zxf redis-3.2.6.tar.gz
 cd /data/redis
 make
 #make fatal error 则 make MALLOC=libc
+
+#为安全计，不能root起。而且要严格的iptables控制访问
+iptables A INPUT  -s 127.0.0.1 -p tcp --dport 6379 -j ACCEPT
+iptables A INPUT  -p tcp --dport 6379   -j REJECT
+or
+iptables I INPUT 3 -s 127.0.0.1 -p tcp --dport 6379 -j ACCEPT
+iptables I INPUT 4 -p tcp --dport 6379   -j REJECT
+
 src/redis-server redis.conf &  #后台启动redis服务器,带配置文件redis.conf
 
 [ -f redis.conf ] && cat /dev/null > redis.conf || touch redis.conf

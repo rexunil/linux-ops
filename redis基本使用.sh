@@ -385,3 +385,9 @@ flushdb
 
 12.删除redis所有数据库中的key
 flushall
+
+13.redis关闭
+yum 或者 apt-get安装的，使用/etc/init.d/redis-server stop
+源码安装的则用redi-cli shutdown
+redis-cli -h 127.0.0.1 -p 6379 shutdown
+实在不行就kill了

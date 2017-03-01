@@ -8,7 +8,6 @@ HAProxy的特点是：
 9、支持负载均衡算法：Round-robin（轮循）、Weight-round-robin（带权轮循）、source（原地址保持）、RI（请求URL）、rdp-cookie（根据cookie）
 10、不能做Web服务器即Cache。
 
-
 LVS：
 1、抗负载能力强。抗负载能力强、性能高，能达到F5硬件的60%；对内存和cpu资源消耗比较低
 2、工作在网络4层，通过vrrp协议转发（仅作分发之用），具体的流量由linux内核处理，因此没有流量的产生。
@@ -17,7 +16,6 @@ LVS：
 4、不支持正则处理，不能做动静分离。
 5、支持负载均衡算法：rr（轮循）、wrr（带权轮循）、lc（最小连接）、wlc（权重最小连接）
 6、配置 复杂，对网络依赖比较大，稳定性很高。
-
 
 Ngnix：
 1、工作在网络的7层之上，可以针对http应用做一些分流的策略，比如针对域名、目录结构；
@@ -39,7 +37,6 @@ Ngnix：
 注：Niginx与Haproxy比较：Niginx支持七层、用户量最大，稳定性比较可靠。
 Haproxy支持四层和七层，支持更多的负载均衡算法，支持session保存等。具体选型看使用场景，
 目前来说Haproxy由于弥补了一些Niginx的缺点用户量也不断在提升。
-
 
 global                                                       # 全局参数的设置
     log         127.0.0.1 local2                      # log语法：log <address_1>[max_level_1] # 全局的日志配置，使用log关键字，

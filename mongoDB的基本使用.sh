@@ -242,5 +242,14 @@ nohttpinterface=true
         posts.find({"date": {"$lt": "d"}}).sort("author").explain()["nscanned"]
 
 }
+十一、不重启实现日志切割
+use admin
+db.runCommand( { logRotate : 1 } )
+针对于3.0以上的版本
+1.初始时就让其切割
+mongod -v --logpath /var/log/mongodb/server1.log --logRotate reopen --logappend
+2.发送信号
+kill -SIGUSR1 <mongod process id>
+
 
 }

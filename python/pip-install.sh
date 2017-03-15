@@ -33,4 +33,18 @@ Requires: jinja2, pycrypto, setuptools, PyYAML, paramiko
 6.查看安装列表
 pip list
 
+7.pip 卸载
+pip uninstall SomePackage
 
+9.pip的自身配置文件，和源修改
+(1)、在用户的家目录下面创建名为.pip文件夹
+(2)、在创建好的.pip文件夹中创建名为pip.conf的文件
+(3)、在pip.conf文件中输入以下内容，就OK。豆瓣的源。
+[global]
+timeout = 6000
+index-url = http://pypi.douban.com/simple
+trusted-host = pypi.douban.com
+
+值得注意的是：
+python很多都是带默认配置，要修改配置就得自己 新建目录和文件。默认配置最好不动。
+因为python查找配置，总是按照文件顺序来加载，蛋疼。

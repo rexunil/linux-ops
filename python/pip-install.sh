@@ -1,6 +1,6 @@
 #安装pip,便于管理python软件的安装包
 #官网 https://pip.pypa.io/en/latest/installing/
-#简单就两条命令
+简单就两条命令
 
 1.安装
 wget https://bootstrap.pypa.io/get-pip.py

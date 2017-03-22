@@ -22,3 +22,8 @@ cp /etc/elasticsearch/logging.yml{,.original}
 
 systemctl daemon-reload
 systemctl enable elasticsearch.service
+
+#直接执行下面的也行。
+#curl -s https://raw.githubusercontent.com/oscm/shell/master/search/elasticsearch/elasticsearch-5.2.sh | bash					
+#curl -s https://raw.githubusercontent.com/oscm/shell/master/log/kibana/kibana-5.2.sh | bash					
+#curl -s https://raw.githubusercontent.com/oscm/shell/master/log/kibana/logstash-5.2.sh | bash	

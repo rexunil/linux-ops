@@ -1,0 +1,95 @@
+1.ansible只是一个框架，包含了很多插件和模块。
+如果仅仅是用ansible来执行命令，copy文件，跑playbook那就大材小用了。
+这个和普通的SSH批量执行没有区别。那么怎么样才能更强大呢？
+
+2.ansible引入了role的概念，把执行的东西进行细分。使得很多事务就可以重用。
+用户可以根据不同的role来组合执行。
+
+3.更加进一步的是，ansible引入了galaxy的社区。一个人的力量毕竟是有限的，而社区的力量却是无穷的。
+galaxy允许共享和下载ansible的角色。ansible基本可以不用修改就可以使用这些role。
+或者是简单地修改，适配自己的环境即可。这样极大地提高了DevOps的效率。
+
+4.特别要指出的是，用户向galaxy提交分享的role是要被ansible官方测试通过才能呈现出来的。
+所以从安全的角度来说，不需要担心安全性问题。
+
+5.role安装模块的安装。
+ansible-galaxy install username.rolename
+#要指出的是，username就是role开发者,在使用的过程中，会遇到各种大牛和小牛。
+#可以学习这些人的DevOps的思路。很有意思。
+#注意roles放在哪里
+[root@LY-TEST ~]$ ansible-galaxy install geerlingguy.mysql
+- downloading role 'mysql', owned by geerlingguy
+- downloading role from https://github.com/geerlingguy/ansible-role-mysql/archive/2.5.1.tar.gz
+- extracting geerlingguy.mysql to /etc/ansible/roles/geerlingguy.mysql
+- geerlingguy.mysql was installed successfully
+
+6.一个一个地安装role非常蛋疼，可以批量安装。
+一、先建个文本，把药安装的role写进去，然后执行即可。
+# roles.txt
+user1.role1,v1.0.0
+user2.role2,v0.5
+user2.role3
+执行这个：
+ansible-galaxy install -r roles.txt
+
+[root@LY-TEST ~]$ cat roless.txt 
+DavidWittman.redis
+geerlingguy.nginx
+
+[root@LY-TEST ~]$ ansible-galaxy install -r roless.txt 
+[DEPRECATION WARNING]: going forward only the yaml format will be supported.
+This feature will be removed in a future release. 
+Deprecation warnings can be disabled by setting deprecation_warnings=False in ansible.cfg.
+- downloading role 'redis', owned by DavidWittman
+- downloading role from https://github.com/DavidWittman/ansible-redis/archive/1.2.2.tar.gz
+- extracting DavidWittman.redis to /etc/ansible/roles/DavidWittman.redis
+- DavidWittman.redis was installed successfully
+- downloading role 'nginx', owned by geerlingguy
+- downloading role from https://github.com/geerlingguy/ansible-role-nginx/archive/2.1.0.tar.gz
+- extracting geerlingguy.nginx to /etc/ansible/roles/geerlingguy.nginx
+- geerlingguy.nginx was installed successfully
+
+二、创建 install_roles.yml 配置文件
+ansible-galaxy install -r install_roles.yml
+
+7.自己想建个role怎么搞呢，role的目录是非常严格的。基本标准化了。
+我之前还用下面的脚本来创建这个，太low了。
+	touch main.yml
+	touch hosts
+	mkdir -p ./roles/common/{handlers,tasks,templates}
+	touch ./roles/common/handlers/main.yml
+	touch ./roles/common/tasks/main.yml
+	touch ./roles/common/templates/main.yml
+    或者 mkdir -pv roles/{http,mysql,php}/{tasks,handlers,files,vars,templates,meta,default}
+没必要，直接这样(注意，这样生成的role在用户home目录下)：
+[root@LY-TEST ~]$ ansible-galaxy init rexunil --force
+- rexunil was created successfully
+[root@LY-TEST rexunil]# pwd
+/root/rexunil
+[root@LY-TEST rexunil]$ tree
+.
+├── defaults
+│  └── main.yml
+├── files          #放文件用的，比如可以用copy命令，把files目录下的文件复制到服务器上
+├── handlers
+│   └── main.yml
+├── meta
+│   └── main.yml   #用来配置模块一些元信息，比如支持的平台，Ansible最小依赖版本，
+├── README.md
+├── tasks
+│   └── main.yml    #这个role的入口文件，命令从main.yml开始执行
+├── templates       #用于jinjia2模板文件
+├── tests
+│   ├── inventory
+│   └── test.yml
+└── vars
+    └── main.yml
+
+8.执行
+ansible-playbook -i hosts site.yml
+
+[root@LY-TEST ~]$ cat site.yml 
+- hosts: mysql
+  remote_user: root
+  roles:
+   - { role: mysql, when: "ansible_nodename == 'v3.ilongyuan.com'"}

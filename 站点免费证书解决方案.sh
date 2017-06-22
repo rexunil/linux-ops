@@ -65,3 +65,12 @@ server {
 
 
 //免费的证书，有个大坑，证书尽管自动更新了，但是nginx需要reload才能重新加载！所以设置一个月reload一次nginx是非常有必要的！
+
+
+//error,pyOpenSSL相关的错误时，按照下面的做。OK
+
+rpm --query centos-release  # centos-release-7-3.1611.el7.centos.x86_64
+wget ftp://ftp.muug.mb.ca/mirror/centos/7.3.1611/cloud/x86_64/openstack-mitaka/common/pyOpenSSL-0.15.1-1.el7.noarch.rpm
+sudo rpm -Uvh pyOpenSSL-0.15.1-1.el7.noarch.rpm
+sudo yum install certbot
+certbot renew  # OK

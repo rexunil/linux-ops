@@ -1,7 +1,7 @@
 mongoDB的基本使用
 
 wget https://fastdl.mongodb.org/linux/mongodb-linux-x86_64-rhel70-3.4.0.tgz
-mkdir -p /data/mongodb{bin,logs,db}          #创建目录
+mkdir -p /data/mongodb/{bin,logs,db}          #创建目录
 touch /data/mongodb/conf/mongodb.conf        #创建配置文件
 ./mongod -f /data/mongodb/conf/mongodb.conf
 src/redis-server redis.conf &                #带配置文件启动

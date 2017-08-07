@@ -391,3 +391,9 @@ yum 或者 apt-get安装的，使用/etc/init.d/redis-server stop
 源码安装的则用redi-cli shutdown
 redis-cli -h 127.0.0.1 -p 6379 shutdown
 实在不行就kill了
+
+14.AOF的重写，最好是把原来的备份一下再写。
+BGREWRITEAOF
+
+15.dump的临时备份，也是最好备份原来的数据。
+save

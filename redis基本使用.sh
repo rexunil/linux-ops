@@ -397,3 +397,6 @@ BGREWRITEAOF
 
 15.dump的临时备份，也是最好备份原来的数据。
 save
+
+13.带密码登录
+$ ./redis-cli -h 127.0.0.1 -p 6379 -a myPassword

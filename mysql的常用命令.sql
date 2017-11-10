@@ -197,3 +197,6 @@ mysql操作次数查询{
 }
 
 show table status\G;  垂直显示行，避免过长，输出格式不对齐，看着难受。
+
+binlog日志查看。
+mysqlbinlog --start-datetime='2017-11-09 09:09:01' --stop-datetime='2017-11-09 10:10:11' -d basket_xx mysql-bin.000883 

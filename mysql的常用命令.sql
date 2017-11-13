@@ -204,3 +204,12 @@ mysqlbinlog --start-datetime='2017-11-09 09:09:01' --stop-datetime='2017-11-09 1
 清空mysql一个库中的所有表
 重建库和表
 用mysqldump --no-data把建表SQL导出来，然后drop database再create database，执行一下导出的SQL文件，把表建上；
+
+从某处开始恢复，可以选时间
+mysqlbinlog --no-defaults --stop-position="367" mysql-bin.000001| mysql -uroot -p123456 test
+
+先查好那一点（用more来查看）
+/usr/bin/mysqlbinlog --no-defaults mysql-bin.000002 --start-position="794" --stop-position="1055" | more
+
+从哪里到哪里进行恢复
+ /usr/bin/mysqlbinlog --no-defaults mysql-bin.000002 --start-position="794" --stop-position="1055" | /usr/bin/mysql -uroot -p123456 test

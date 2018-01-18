@@ -213,3 +213,10 @@ mysqlbinlog --no-defaults --stop-position="367" mysql-bin.000001| mysql -uroot -
 
 从哪里到哪里进行恢复
  /usr/bin/mysqlbinlog --no-defaults mysql-bin.000002 --start-position="794" --stop-position="1055" | /usr/bin/mysql -uroot -p123456 test
+ 
+MySQL开启命令自动补全功能(auto-rehash)
+[mysql]
+#no-auto-rehash
+auto-rehash
+mysql命令行工具自带这个功能，但是默认是禁用的。
+想启用其实很简单，打开配置文件找到no-auto-rehash，用符号 # 将其注释，另外增加auto-rehash即可。

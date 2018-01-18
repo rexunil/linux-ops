@@ -219,4 +219,4 @@ MySQL开启命令自动补全功能(auto-rehash)
 #no-auto-rehash
 auto-rehash
 mysql命令行工具自带这个功能，但是默认是禁用的。
-想启用其实很简单，打开配置文件找到no-auto-rehash，用符号 # 将其注释，另外增加auto-rehash即可。
+想启用其实很简单，打开配置文件找到no-auto-rehash，用符号 # 注释，另外增加auto-rehash即可。

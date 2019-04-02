@@ -1,0 +1,22 @@
+1.为了不影响线上的redis性能。一般从库上来做操作。采用 bgsave 生成 dump.rdb 文件，再结合 redis-rdb-tools 和 sqlite 来进行静态分析。
+2.redis-rdb-tools是一个python的解析rdb文件的工具，在分析内存的时候，我们主要用它生成内存快照。主要有以下三个功能：
+生成内存快照
+转储成 json 格式
+使用标准的 diff 工具比较两个 dump 文件
+
+3.使用 PYPI 安装
+pip install rdbtools
+
+4.从源码安装
+git clone https://github.com/sripathikrishnan/redis-rdb-tools
+cd redis-rdb-tools
+sudo python setup.py install
+
+5.生成内存快照的命令为：
+rdb -c memory dump.rdb > memory.csv
+
+6.分析内存快照
+sqlite3 memory.db
+sqlite> create table memory(database int,type varchar(128),key varchar(128),size_in_bytes int,encoding varchar(128),num_elements int,len_largest_element varchar(128));
+sqlite>.mode csv memory
+sqlite>.import memory.csv memory

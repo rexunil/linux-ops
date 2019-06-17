@@ -14,6 +14,8 @@ iptables I INPUT 4 -p tcp --dport 6379   -j REJECT
 
 src/redis-server redis.conf &  #后台启动redis服务器,带配置文件redis.conf
 
+src/redis-server redis.conf > /dev/null 2>&1  &
+
 [ -f redis.conf ] && cat /dev/null > redis.conf || touch redis.conf
 
 ####redis默认配置

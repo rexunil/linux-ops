@@ -1,5 +1,7 @@
 1.安装
 wget http://download.redis.io/releases/redis-3.2.6.tar.gz
+#最新的
+wget http://download.redis.io/releases/redis-3.2.13.tar.gz
 tar -zxf redis-3.2.6.tar.gz
 cd /data/redis
 make

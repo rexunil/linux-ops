@@ -16,6 +16,69 @@ supervisor是C/S结构。supervisord（server是服务端，客户端是supervis
 supervisord端配置文件，安装完后，即可用命令echo_supervisord_conf输出默认配置文件
 echo_supervisord_conf > /etc/supervisord.conf
 
+-----------------supervisord--------------
+yum install wget -y
+wget https://bootstrap.pypa.io/get-pip.py
+python get-pip.py 
+pip install supervisor
+mkdir -p /etc/supervisord.d/
+touch /etc/supervisord.conf 
+touch /usr/lib/systemd/system/supervisord.service
+
+cat >> /etc/supervisord.conf << EOF
+[unix_http_server]
+file=/var/run/supervisor.sock   ; the path to the socket file
+[supervisord]
+logfile=/var/log/supervisord.log ; main log file; default $CWD/supervisord.log
+logfile_maxbytes=50MB        ; max main logfile bytes b4 rotation; default 50MB
+logfile_backups=10           ; # of main logfile backups; 0 means none, default 10
+loglevel=info                ; log level; default info; others: debug,warn,trace
+pidfile=/var/run/supervisord.pid ; supervisord pidfile; default supervisord.pid
+nodaemon=false               ; start in foreground if true; default false
+minfds=1024                  ; min. avail startup file descriptors; default 1024
+minprocs=200                 ; min. avail process descriptors;default 200
+[rpcinterface:supervisor]
+supervisor.rpcinterface_factory = supervisor.rpcinterface:make_main_rpcinterface
+[supervisorctl]
+serverurl=unix:///var/run/supervisor.sock ; use a unix:// URL  for a unix socket
+[include]
+files = /etc/supervisord.d/*.ini
+EOF
+
+cat >> /usr/lib/systemd/system/supervisord.service << EOF
+[Unit]
+Description=supervisord - Supervisor process control system for UNIX
+Documentation=http://supervisord.org
+After=network.target
+
+[Service]
+LimitNPROC=65535
+LimitNOFILE=65535
+Type=forking
+ExecStart=/bin/supervisord -c /etc/supervisord.conf
+ExecReload=/bin/supervisorctl reload
+ExecStop=/bin/supervisorctl shutdown
+User=root
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+systemctl daemon-reload
+systemctl start supervisord.service
+supervisorctl status
+
+-----------------supervisord--------------
+
+
+
+
+
+
+
+
+
+
 --------------------线上示例1-------------------------
 [root@_ops ops]# cat supervisord.conf 
 [unix_http_server]

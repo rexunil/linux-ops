@@ -17,6 +17,23 @@ fork=true
 nohttpinterface=true
 ======================END===========================
 
+=========mongodb4.0==========
+
+systemLog:
+  destination: file
+  path: /usr/local/var/log/mongodb/mongo.log 
+  logAppend: true
+storage:
+  dbPath: /usr/local/var/mongodb
+net:
+  port: 27110
+  bindIp: 127.0.0.1
+security:
+  authorization: enabled
+processManagement:
+
+======================END===========================
+
 一、启动{
 
     # 不启动认证

@@ -31,7 +31,7 @@ net:
 security:
   authorization: enabled
 processManagement:
-
+  fork: true
 ======================END===========================
 
 一、启动{

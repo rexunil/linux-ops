@@ -34,6 +34,32 @@ processManagement:
   fork: true
 ======================END===========================
 
+=========mongodb4.0============================
+wget https://fastdl.mongodb.org/linux/mongodb-linux-x86_64-rhel70-4.0.20.tgz
+tar zxf  mongodb-linux-x86_64-rhel70-4.0.20.tgz
+mv mongodb-linux-x86_64-rhel70-4.0.20 mongodb40
+rm mongodb-linux-x86_64-rhel70-4.0.20.tgz -f
+
+mkdir -p /data/mongodb40/{log,db}
+touch /data/mongodb40/mongodb.conf 
+
+cat >> /data/mongodb40/mongodb.conf << EOF
+systemLog:
+  destination: file
+  path: /data/mongodb40/log/mongodb/mongo.log 
+  logAppend: true
+storage:
+  dbPath: /data/mongodb40/db
+net:
+  port: 27017
+  bindIp: 127.0.0.1
+security:
+  authorization: enabled
+processManagement:
+  fork: true
+
+EOF
+=========mongodb4.0============================
 一、启动{
 
     # 不启动认证

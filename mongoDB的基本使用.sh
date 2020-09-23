@@ -59,6 +59,16 @@ processManagement:
   fork: true
 EOF
 
+上述配置文件不能后台运行，换成最简单的可以。
+
+下面的可以
+
+dbpath=/data/mongodb40/db
+logpath=/data/mongodb40/log/mongodb.log
+bind_ip=127.0.0.1
+port=27017
+fork=true
+
 /data/mongodb40/bin/mongod -f /data/mongodb40/mongodb.conf
 =========mongodb4.0============================
 一、启动{

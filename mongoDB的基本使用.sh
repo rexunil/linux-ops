@@ -57,8 +57,9 @@ security:
   authorization: enabled
 processManagement:
   fork: true
-
 EOF
+
+/data/mongodb40/bin/mongod /data/mongodb40/mongodb.conf
 =========mongodb4.0============================
 一、启动{
 

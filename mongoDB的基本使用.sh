@@ -59,7 +59,7 @@ processManagement:
   fork: true
 EOF
 
-/data/mongodb40/bin/mongod /data/mongodb40/mongodb.conf
+/data/mongodb40/bin/mongod -f /data/mongodb40/mongodb.conf
 =========mongodb4.0============================
 一、启动{
 
